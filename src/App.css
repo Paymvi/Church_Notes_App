@@ -1,0 +1,659 @@
+/* =========================================================
+   APP
+========================================================= */
+
+#root {
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-shell {
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f2ed;
+  color: #22251f;
+}
+
+
+/* =========================================================
+   GENERAL PAGE
+========================================================= */
+
+.home-page,
+.notes-page {
+  width: min(100% - 32px, 680px);
+  margin: 0 auto;
+  padding: 48px 0 100px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-eyebrow {
+  margin: 0 0 6px;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+
+  color: #7a806f;
+}
+
+.page-header h1,
+.church-notes-header h1 {
+  margin: 0;
+
+  font-size: clamp(32px, 7vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+
+  color: #1e211c;
+}
+
+.page-subtitle {
+  margin: 10px 0 0;
+
+  font-size: 15px;
+  color: #74776f;
+}
+
+
+/* =========================================================
+   HOME — CHURCH LIST
+========================================================= */
+
+.church-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+
+/* =========================================================
+   CHURCH CARD
+========================================================= */
+
+.church-card {
+  width: 100%;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  border: 1px solid #deddd6;
+  border-radius: 24px;
+
+  background: #ffffff;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.03),
+    0 12px 30px rgba(0, 0, 0, 0.06);
+
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.church-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    0 18px 38px rgba(0, 0, 0, 0.08);
+}
+
+.church-card:active {
+  transform: scale(0.99);
+}
+
+
+/* =========================================================
+   CHURCH IMAGE
+========================================================= */
+
+.church-image-wrapper {
+  width: 100%;
+  height: 240px;
+
+  overflow: hidden;
+
+  background: #deded6;
+}
+
+.church-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 350ms ease;
+}
+
+.church-card:hover .church-image {
+  transform: scale(1.025);
+}
+
+
+/* =========================================================
+   BOTTOM OF CHURCH CARD
+========================================================= */
+
+.church-card-footer {
+  min-height: 90px;
+
+  padding: 20px 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.church-card-footer h2 {
+  margin: 0 0 5px;
+
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+
+  color: #242720;
+}
+
+.church-card-footer p {
+  margin: 0;
+
+  font-size: 13px;
+  color: #8b8d85;
+}
+
+.church-arrow {
+  font-size: 34px;
+  font-weight: 300;
+
+  color: #8b8f83;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   NOTES PAGE
+========================================================= */
+
+.back-button {
+  margin: 0 0 30px;
+  padding: 8px 0;
+
+  border: none;
+  background: transparent;
+
+  color: #6c7166;
+
+  font-size: 14px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.back-button:hover {
+  color: #252921;
+}
+
+
+/* =========================================================
+   CHURCH NOTES HEADER
+========================================================= */
+
+.church-notes-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-bottom: 34px;
+}
+
+.small-church-image {
+  width: 74px;
+  height: 74px;
+
+  flex-shrink: 0;
+
+  border-radius: 20px;
+  overflow: hidden;
+
+  background: #deded6;
+}
+
+.small-church-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+  object-fit: cover;
+}
+
+.church-notes-header h1 {
+  font-size: clamp(27px, 6vw, 38px);
+}
+
+
+/* =========================================================
+   NOTES TOP BAR
+========================================================= */
+
+.notes-top-row {
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.notes-top-row p {
+  margin: 0;
+
+  color: #8a8d83;
+  font-size: 13px;
+}
+
+.add-note-button {
+  padding: 10px 16px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: #283327;
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 150ms ease,
+    background 150ms ease;
+}
+
+.add-note-button:hover {
+  background: #364335;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   NOTES STACK
+========================================================= */
+
+.notes-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+
+/* =========================================================
+   NOTE CARD
+========================================================= */
+
+.note-card {
+  overflow: hidden;
+
+  border: 1px solid #deddd5;
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.025),
+    0 8px 24px rgba(0, 0, 0, 0.035);
+
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.note-card-open {
+  border-color: #cfd2c8;
+
+  box-shadow:
+    0 3px 7px rgba(0, 0, 0, 0.03),
+    0 14px 32px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================================================
+   NOTE HEADER
+========================================================= */
+
+.note-card-header {
+  width: 100%;
+
+  padding: 19px 21px;
+
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.note-card-header:hover {
+  background: #fafaf7;
+}
+
+.note-header-text {
+  min-width: 0;
+}
+
+.note-header-text h2 {
+  margin: 0 0 5px;
+
+  font-size: 17px;
+  font-weight: 720;
+  letter-spacing: -0.01em;
+
+  color: #272a24;
+}
+
+.note-header-text p {
+  margin: 0;
+
+  color: #95978f;
+
+  font-size: 12px;
+}
+
+.note-chevron {
+  display: inline-flex;
+
+  font-size: 24px;
+  line-height: 1;
+
+  color: #8d9187;
+
+  transition: transform 180ms ease;
+}
+
+.note-chevron-open {
+  transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   EXPANDED NOTE BODY
+========================================================= */
+
+.note-card-body {
+  padding: 0 21px 22px;
+
+  border-top: 1px solid #eeeeea;
+}
+
+
+/* =========================================================
+   NOTE TOOLBAR
+========================================================= */
+
+.note-toolbar {
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin-bottom: 6px;
+}
+
+.toolbar-label {
+  font-size: 12px;
+  font-weight: 700;
+
+  color: #80847a;
+}
+
+
+/* =========================================================
+   FONT SIZE BUTTONS
+========================================================= */
+
+.font-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.font-controls button {
+  width: 36px;
+  height: 32px;
+
+  border: 1px solid #ddddD6;
+  border-radius: 10px;
+
+  background: #f7f7f3;
+  color: #444940;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+.font-controls button:hover {
+  background: #eeeeE8;
+}
+
+.font-controls span {
+  width: 42px;
+
+  text-align: center;
+
+  font-size: 11px;
+  color: #858980;
+}
+
+
+/* =========================================================
+   INPUT LABELS
+========================================================= */
+
+.field-label {
+  display: block;
+
+  margin: 18px 0 7px;
+
+  color: #85887f;
+
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   NOTE INPUTS
+========================================================= */
+
+.note-title-input,
+.note-date-input {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #deded8;
+  border-radius: 12px;
+
+  background: #fafaf7;
+  color: #292c26;
+
+  outline: none;
+}
+
+.note-title-input {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.note-date-input {
+  font-size: 13px;
+}
+
+.note-title-input:focus,
+.note-date-input:focus,
+.note-textarea:focus {
+  border-color: #9da496;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   NOTE TEXT AREA
+========================================================= */
+
+.note-textarea {
+  width: 100%;
+  min-height: 330px;
+
+  padding: 16px;
+
+  border: 1px solid #deded8;
+  border-radius: 14px;
+
+  background: #fafaf7;
+  color: #292c26;
+
+  line-height: 1.7;
+
+  resize: vertical;
+  outline: none;
+
+  transition:
+    border-color 150ms ease,
+    background 150ms ease;
+}
+
+.note-textarea::placeholder {
+  color: #a7aaa2;
+}
+
+
+/* =========================================================
+   EMPTY NOTES
+========================================================= */
+
+.empty-notes {
+  padding: 60px 30px;
+
+  border: 1px dashed #ced0c7;
+  border-radius: 20px;
+
+  text-align: center;
+
+  background: #f9f8f4;
+}
+
+.empty-notes h2 {
+  margin: 0 0 8px;
+
+  font-size: 19px;
+}
+
+.empty-notes p {
+  margin: 0 0 22px;
+
+  color: #8b8e85;
+
+  font-size: 14px;
+}
+
+.empty-notes button {
+  padding: 11px 18px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: #283327;
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .home-page,
+  .notes-page {
+    width: calc(100% - 24px);
+    padding-top: 30px;
+  }
+
+  .church-image-wrapper {
+    height: 205px;
+  }
+
+  .church-card {
+    border-radius: 20px;
+  }
+
+  .church-card-footer {
+    padding: 17px 18px;
+  }
+
+  .note-card-header {
+    padding: 17px;
+  }
+
+  .note-card-body {
+    padding-left: 17px;
+    padding-right: 17px;
+  }
+
+  .small-church-image {
+    width: 64px;
+    height: 64px;
+
+    border-radius: 16px;
+  }
+}
