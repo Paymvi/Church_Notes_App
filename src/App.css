@@ -32,10 +32,20 @@ button {
    GENERAL PAGE
 ========================================================= */
 
-.home-page,
-.notes-page {
+.home-page {
   width: min(100% - 32px, 680px);
+
   margin: 0 auto;
+
+  padding: 48px 0 100px;
+}
+
+
+.notes-page {
+  width: min(100% - 40px, 980px);
+
+  margin: 0 auto;
+
   padding: 48px 0 100px;
 }
 
@@ -488,19 +498,6 @@ button {
    INPUT LABELS
 ========================================================= */
 
-.field-label {
-  display: block;
-
-  margin: 18px 0 7px;
-
-  color: #85887f;
-
-  font-size: 11px;
-  font-weight: 750;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 
 /* =========================================================
    NOTE INPUTS
@@ -513,7 +510,7 @@ button {
   padding: 12px 14px;
 
   border: 1px solid #deded8;
-  border-radius: 12px;
+  border-radius: 10px;
 
   background: #fafaf7;
   color: #292c26;
@@ -522,8 +519,29 @@ button {
 }
 
 .note-title-input {
+  width: 100%;
+  height: 52px;
+
+  padding: 0 16px;
+
+  border: 1px solid #d8d9d2;
+  border-radius: 13px;
+
+  background: #fafaf7;
+  color: #252821;
+
+  /* Match the date field */
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 400;
+
+  outline: none;
+}
+
+.note-title-input::placeholder {
+  color: #999d94;
+
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .note-date-input {
@@ -790,4 +808,910 @@ button {
 
   text-shadow:
     0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   NOTES / CHURCH DETAIL PAGE
+   MOBILE FIRST
+========================================================= */
+
+.notes-page {
+  position: relative;
+
+  width: 100%;
+  max-width: none;
+
+  margin: 0;
+
+  /* No top padding — image begins at the top of the page */
+  padding: 0 0 80px;
+
+  background: #f4f2ed;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   Floats on top of banner image
+========================================================= */
+
+.back-button {
+  position: absolute;
+
+  top: 18px;
+  left: 18px;
+
+  z-index: 20;
+
+  margin: 0;
+  padding: 9px 13px;
+
+  border: none;
+  border-radius: 999px;
+
+  /*
+    Slight dark background helps it stay readable
+    regardless of the church photo.
+  */
+  background: rgba(0, 0, 0, 0.32);
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  transition:
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.back-button:hover {
+  background: rgba(0, 0, 0, 0.48);
+}
+
+.back-button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================================
+   CHURCH DETAIL HEADER
+========================================================= */
+
+.church-detail-header {
+  width: 100%;
+
+  margin: 0 0 34px;
+}
+
+
+/* =========================================================
+   LARGE FULL-WIDTH BANNER
+
+   No card.
+   No rounded corners.
+   No margin around it.
+========================================================= */
+
+.church-banner {
+  width: 100%;
+  height: 290px;
+
+  overflow: hidden;
+
+  border-radius: 0;
+
+  background: #252525;
+
+  box-shadow: none;
+}
+
+
+/* Actual banner image */
+
+.church-banner img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   CHURCH INFORMATION UNDER IMAGE
+========================================================= */
+
+.church-detail-title {
+  padding: 22px 18px 0;
+
+  margin: 0;
+}
+
+
+/* Little "CHURCH" label */
+
+.church-detail-title .page-eyebrow {
+  margin: 0 0 6px;
+
+  color: #7f8379;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.17em;
+}
+
+
+/* Church name */
+
+.church-detail-title h1 {
+  margin: 0;
+
+  color: #20231e;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  line-height: 1.08;
+
+  letter-spacing: -0.04em;
+}
+
+
+/* =========================================================
+   SERVICE TIMES
+========================================================= */
+
+.service-times {
+  width: calc(100% - 36px);
+
+  margin: 22px 18px 0;
+
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+
+/* Individual service */
+
+.service-time {
+  min-width: 0;
+
+  padding: 14px 15px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  border: 1px solid #ddded7;
+
+  border-radius: 14px;
+
+  background: #faf9f5;
+}
+
+
+.service-time-label {
+  color: #8c9086;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+
+.service-time-value {
+  color: #292d26;
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   NOTES SECTION HEADER
+========================================================= */
+
+.notes-top-row {
+  width: calc(100% - 36px);
+
+  margin: 0 18px 18px;
+
+  padding-top: 25px;
+
+  border-top: 1px solid #dcded6;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 16px;
+}
+
+
+.notes-section-heading {
+  min-width: 0;
+}
+
+
+.notes-section-heading .page-eyebrow {
+  margin: 0 0 4px;
+
+  color: #85897f;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.15em;
+}
+
+
+.notes-section-heading h2 {
+  margin: 0;
+
+  color: #252821;
+
+  font-size: 25px;
+  font-weight: 780;
+
+  letter-spacing: -0.035em;
+}
+
+
+/* =========================================================
+   NEW NOTE BUTTON
+========================================================= */
+
+.add-note-button {
+  flex-shrink: 0;
+
+  padding: 10px 15px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: #283327;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+
+.add-note-button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================================
+   NOTES THEMSELVES
+
+   Since notes-page is now full width,
+   give the notes their own side spacing.
+========================================================= */
+
+.notes-stack {
+  width: calc(100% - 36px);
+
+  margin: 0 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-notes {
+  padding: 46px 20px;
+
+  border: 1px dashed #d5d6cf;
+  border-radius: 18px;
+
+  background: #f9f8f4;
+
+  text-align: center;
+}
+
+
+.empty-notes h2 {
+  margin: 0 0 7px;
+
+  color: #30342c;
+
+  font-size: 18px;
+}
+
+
+.empty-notes p {
+  margin: 0;
+
+  color: #93968d;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+
+
+
+
+/* =========================================================
+   NOTES SECTION
+========================================================= */
+
+.notes-top-row {
+  width: calc(100% - 36px);
+
+  margin: 0 18px 16px;
+  padding-top: 24px;
+
+  border-top: 1px solid rgba(40, 50, 39, 0.12);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+
+/* =========================================================
+   NOTES HEADING
+========================================================= */
+
+.notes-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+
+.notes-section-heading .page-eyebrow {
+  display: none;
+}
+
+
+.notes-section-heading h2 {
+  margin: 0;
+
+  color: #20231e;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+
+/* =========================================================
+   NEW NOTE BUTTON
+========================================================= */
+
+.add-note-button {
+  flex-shrink: 0;
+
+  padding: 10px 15px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #283327;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  box-shadow: none;
+
+  transition:
+    transform 120ms ease,
+    background 120ms ease;
+}
+
+
+.add-note-button:hover {
+  background: #344033;
+}
+
+
+.add-note-button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================================
+   NOTES STACK
+========================================================= */
+
+.notes-stack {
+  width: calc(100% - 36px);
+
+  margin: 0 18px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+/* =========================================================
+   EMPTY NOTES
+
+   Much smaller and cleaner.
+========================================================= */
+
+.empty-notes {
+  width: 100%;
+
+  padding: 34px 22px;
+
+  border: none;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.38);
+
+  text-align: left;
+}
+
+
+/* Empty-state title */
+
+.empty-notes h2 {
+  margin: 0 0 6px;
+
+  color: #2b2f28;
+
+  font-size: 16px;
+  font-weight: 750;
+
+  letter-spacing: -0.015em;
+}
+
+
+/* Empty-state description */
+
+.empty-notes p {
+  margin: 0;
+
+  color: #8a8e85;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/*
+  You already have + New Note above,
+  so hide the duplicate Create Note button.
+*/
+
+.empty-notes button {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   DATE + FONT SIZE ROW
+========================================================= */
+
+.date-font-row {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+/* Date takes up the available space */
+
+.date-font-row .note-date-input {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   COMPACT FONT CONTROLS
+========================================================= */
+
+.inline-font-controls {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+}
+
+
+.inline-font-controls button {
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #deded8;
+  border-radius: 10px;
+
+  background: #fafaf7;
+  color: #30342c;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+
+.inline-font-controls button:hover {
+  background: #f0f0eb;
+}
+
+
+.inline-font-controls button:active {
+  transform: scale(0.96);
+}
+
+
+/* Current font size number */
+
+.inline-font-controls span {
+  width: 28px;
+
+  text-align: center;
+
+  color: #858980;
+
+  font-size: 11px;
+  font-weight: 650;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   NOTE EDITOR FIELDS
+========================================================= */
+
+.note-editor-fields {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.note-title-input {
+  width: 100%;
+  height: 52px;
+
+  padding: 0 16px;
+
+  border: 1px solid #d8d9d2;
+  border-radius: 13px;
+
+  background: #fafaf7;
+  color: #252821;
+
+  font-size: 16px;
+  font-weight: 650;
+
+  outline: none;
+}
+
+
+.note-title-input::placeholder {
+  color: #999d94;
+}
+
+
+/* =========================================================
+   DATE + FONT SIZE
+========================================================= */
+
+.date-font-row {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.note-date-input {
+  flex: 1;
+  min-width: 0;
+
+  height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d8d9d2;
+  border-radius: 13px;
+
+  background: #fafaf7;
+  color: #252821;
+
+  font-size: 13px;
+
+  outline: none;
+}
+
+
+/* =========================================================
+   FONT SIZE CONTROLS
+========================================================= */
+
+.inline-font-controls {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+}
+
+
+.inline-font-controls button {
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #d8d9d2;
+  border-radius: 11px;
+
+  background: #fafaf7;
+  color: #30342c;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+
+.inline-font-controls span {
+  width: 26px;
+
+  text-align: center;
+
+  color: #8b8f86;
+
+  font-size: 11px;
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   NOTES TEXT AREA
+========================================================= */
+
+.note-textarea {
+  width: 100%;
+  min-height: 320px;
+
+  padding: 16px;
+
+  border: 1px solid #d8d9d2;
+  border-radius: 13px;
+
+  background: #fafaf7;
+  color: #252821;
+
+  line-height: 1.65;
+
+  resize: vertical;
+  outline: none;
+}
+
+
+.note-textarea::placeholder {
+  color: #999d94;
+}
+
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+.note-title-input:focus,
+.note-date-input:focus,
+.note-textarea:focus {
+  border-color: #9ca397;
+  background: #ffffff;
+}
+
+
+
+.note-textarea {
+  width: 100%;
+  min-height: 320px;
+
+  padding: 16px;
+
+  border: 1px solid #d8d9d2;
+  border-radius: 13px;
+
+  background: #fafaf7;
+  color: #252821;
+
+  font-weight: 400;
+  line-height: 1.6;
+
+  resize: vertical;
+  outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CLEAN NOTE INPUT TYPOGRAPHY
+   Paste at END of App.css
+========================================================= */
+
+.note-title-input,
+.note-date-input {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #252821;
+}
+
+.note-title-input::placeholder,
+.note-date-input::placeholder,
+.note-textarea::placeholder {
+  color: #999d94 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  opacity: 1;
+}
+
+.note-textarea {
+  font-weight: 400 !important;
+  line-height: 1.6;
+}
+
+.note-title-input {
+  height: 52px;
+  padding: 0 16px;
+}
+
+.note-date-input {
+  height: 46px;
+  padding: 0 14px;
+}
+
+.note-textarea {
+  padding: 16px;
+}
+
+.note-card-body {
+  padding-top: 16px;
 }

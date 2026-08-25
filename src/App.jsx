@@ -14,6 +14,19 @@ const starterChurches = [
     id: 1,
     name: "Tower Hill Church",
     image: "/churches/Tower_Hill.jpg",
+
+        serviceTimes: [
+      {
+        label: "First Service",
+        time: "9:00 AM",
+      },
+      {
+        label: "Second Service",
+        time: "10:30 AM",
+      },
+    ],
+
+
     notes: [],
     imagePosition: "5% 35%",
   },
@@ -230,7 +243,7 @@ export default function App() {
 
     const newNote = {
       id: Date.now(),
-      title: "New Note",
+      title: "",
       date: getTodayDate(),
       text: "",
       isOpen: true,
@@ -352,25 +365,33 @@ export default function App() {
         </button>
 
 
-        <header className="church-notes-header">
+        {/* =========================================================
+            CHURCH HERO
+        ========================================================= */}
 
-          <div className="small-church-image">
+        <section className="church-detail-header">
 
+          {/* LARGE BANNER IMAGE */}
+
+          <div className="church-banner">
             <img
               src={selectedChurch.image}
               alt={selectedChurch.name}
               style={{
                 objectPosition:
-                  selectedChurch.imagePosition || "50% 50%",
+                  selectedChurch.bannerPosition ||
+                  selectedChurch.imagePosition ||
+                  "50% 50%",
               }}
             />
-
           </div>
 
 
-          <div>
+          {/* CHURCH NAME */}
+
+          <div className="church-detail-title">
             <p className="page-eyebrow">
-              NOTES
+              CHURCH
             </p>
 
             <h1>
@@ -378,17 +399,43 @@ export default function App() {
             </h1>
           </div>
 
-        </header>
+
+          {/* SERVICE TIMES */}
+
+          {selectedChurch.serviceTimes?.length > 0 && (
+
+            <div className="service-times">
+
+              {selectedChurch.serviceTimes.map((service, index) => (
+
+                <div
+                  className="service-time"
+                  key={index}
+                >
+                  <span className="service-time-label">
+                    {service.label}
+                  </span>
+
+                  <strong className="service-time-value">
+                    {service.time}
+                  </strong>
+                </div>
+
+              ))}
+
+            </div>
+
+          )}
+
+        </section>
 
 
         <div className="notes-top-row">
 
-          <p>
-            {selectedChurch.notes.length}{" "}
-            {selectedChurch.notes.length === 1
-              ? "note"
-              : "notes"}
-          </p>
+          <div className="notes-section-heading">
+
+            <h2>Notes</h2>
+          </div>
 
 
           <button
@@ -468,96 +515,97 @@ export default function App() {
 
                 <div className="note-card-body">
 
-                  <div className="note-toolbar">
-
-                    <span className="toolbar-label">
-                      Text size
-                    </span>
+                  
 
 
-                    <div className="font-controls">
+                  <div className="note-editor-fields">
 
-                      <button
-                        onClick={() =>
-                          changeFontSize(note.id, -1)
+                    {/* NOTE TITLE */}
+
+                    <input
+                      className="note-title-input"
+                      value={note.title}
+                      onChange={(event) =>
+                        updateNote(
+                          note.id,
+                          "title",
+                          event.target.value
+                        )
+                      }
+                      placeholder="Note title"
+                    />
+
+
+                    {/* DATE + TEXT SIZE */}
+
+                    <div className="date-font-row">
+
+                      <input
+                        className="note-date-input"
+                        value={note.date}
+                        onChange={(event) =>
+                          updateNote(
+                            note.id,
+                            "date",
+                            event.target.value
+                          )
                         }
-                      >
-                        A−
-                      </button>
+                        placeholder="Date"
+                      />
 
 
-                      <span>
-                        {note.fontSize}px
-                      </span>
+                      <div className="inline-font-controls">
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            changeFontSize(note.id, -1)
+                          }
+                          aria-label="Decrease text size"
+                        >
+                          A−
+                        </button>
 
 
-                      <button
-                        onClick={() =>
-                          changeFontSize(note.id, 1)
-                        }
-                      >
-                        A+
-                      </button>
+                        <span>
+                          {note.fontSize}
+                        </span>
+
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            changeFontSize(note.id, 1)
+                          }
+                          aria-label="Increase text size"
+                        >
+                          A+
+                        </button>
+
+                      </div>
 
                     </div>
 
+
+                    {/* NOTE CONTENT */}
+
+                    <textarea
+                      className="note-textarea"
+                      placeholder="Write your sermon notes..."
+                      value={note.text}
+                      onChange={(event) =>
+                        updateNote(
+                          note.id,
+                          "text",
+                          event.target.value
+                        )
+                      }
+                      style={{
+                        fontSize: `${note.fontSize}px`,
+                      }}
+                    />
+
                   </div>
-
-
-                  <label className="field-label">
-                    Title
-                  </label>
-
-                  <input
-                    className="note-title-input"
-                    value={note.title}
-                    onChange={(event) =>
-                      updateNote(
-                        note.id,
-                        "title",
-                        event.target.value
-                      )
-                    }
-                    placeholder="Sermon title"
-                  />
-
-
-                  <label className="field-label">
-                    Date
-                  </label>
-
-                  <input
-                    className="note-date-input"
-                    value={note.date}
-                    onChange={(event) =>
-                      updateNote(
-                        note.id,
-                        "date",
-                        event.target.value
-                      )
-                    }
-                  />
-
-
-                  <label className="field-label">
-                    Notes
-                  </label>
-
-                  <textarea
-                    className="note-textarea"
-                    placeholder="Start writing..."
-                    value={note.text}
-                    onChange={(event) =>
-                      updateNote(
-                        note.id,
-                        "text",
-                        event.target.value
-                      )
-                    }
-                    style={{
-                      fontSize: `${note.fontSize}px`,
-                    }}
-                  />
 
                 </div>
 
