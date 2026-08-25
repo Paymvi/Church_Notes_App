@@ -164,9 +164,7 @@ button {
 ========================================================= */
 
 .church-card-footer {
-  min-height: 90px;
-
-  padding: 20px 22px;
+  padding: 14px 22px;
 
   display: flex;
   align-items: center;

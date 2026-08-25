@@ -12,63 +12,33 @@ import "./App.css";
 const starterChurches = [
   {
     id: 1,
-    name: "Antioch Church",
-    image: "/churches/antioch.jpg",
-
-    notes: [
-      {
-        id: 1,
-        title: "Sunday Service",
-        date: "August 23, 2026",
-        text: `Main passage: John 15
-
-Jesus describes Himself as the true vine.
-
-Things I want to remember:
-- Abiding is not passive
-- Fruit comes from remaining connected to Christ
-- Spiritual growth is not something I manufacture by myself`,
-        isOpen: false,
-        fontSize: 16,
-      },
-
-      {
-        id: 2,
-        title: "Faith and Obedience",
-        date: "August 16, 2026",
-        text: "",
-        isOpen: false,
-        fontSize: 16,
-      },
-    ],
+    name: "Tower Hill Church",
+    image: "/churches/Tower_Hill.jpg",
+    notes: [],
+    imagePosition: "5% 35%",
   },
 
   {
     id: 2,
-    name: "InterVarsity",
-    image: "/churches/intervarsity.jpg",
-
-    notes: [
-      {
-        id: 1,
-        title: "Bible Study",
-        date: "August 20, 2026",
-        text: "",
-        isOpen: false,
-        fontSize: 16,
-      },
-    ],
+    name: "Fellowship Bible Church",
+    image: "/churches/Fellowship_Bible_Church.jpg",
+    notes: [],
   },
 
   {
     id: 3,
-    name: "Other Church",
-    image: "/churches/home-church.jpg",
+    name: "Other Churches",
+    image: "/churches/another-church.jpg",
+    notes: [],
+  },
 
+  {
+    id: 4,
+    name: "Bible Studies",
+    image: "/churches/another-church.jpg",
     notes: [],
   },
 ];
-
 
 // =========================================================
 // DATE HELPER
@@ -95,15 +65,30 @@ export default function App() {
   const [churches, setChurches] = useState(() => {
     const saved = localStorage.getItem("bibleNotesChurches");
 
+    let savedChurches = [];
+
     if (saved) {
       try {
-        return JSON.parse(saved);
+        savedChurches = JSON.parse(saved);
       } catch {
-        return starterChurches;
+        savedChurches = [];
       }
     }
 
-    return starterChurches;
+    // Always use the CURRENT church information from the code.
+    // Only bring over the saved notes from localStorage.
+    return starterChurches.map((church) => {
+      const savedChurch = savedChurches.find(
+        (savedChurch) => savedChurch.id === church.id
+      );
+
+      return {
+        ...church,
+
+        // Keep previously saved notes if they exist.
+        notes: savedChurch?.notes || [],
+      };
+    });
   });
 
 
@@ -282,15 +267,12 @@ export default function App() {
         <main className="home-page">
 
           <header className="page-header">
-            <p className="page-eyebrow">
+            {/* <p className="page-eyebrow">
               MY NOTES
-            </p>
+            </p> */}
 
-            <h1>Bible Notes</h1>
+            <h1>Church Notes</h1>
 
-            <p className="page-subtitle">
-              Choose a church or ministry.
-            </p>
           </header>
 
 
@@ -312,6 +294,9 @@ export default function App() {
                     src={church.image}
                     alt={church.name}
                     className="church-image"
+                    style={{
+                      objectPosition: church.imagePosition || "50% 50%",
+                    }}
                   />
 
                 </div>
@@ -322,12 +307,12 @@ export default function App() {
                   <div>
                     <h2>{church.name}</h2>
 
-                    <p>
+                    {/* <p>
                       {church.notes.length}{" "}
                       {church.notes.length === 1
                         ? "note"
                         : "notes"}
-                    </p>
+                    </p> */}
                   </div>
 
 
@@ -374,6 +359,10 @@ export default function App() {
             <img
               src={selectedChurch.image}
               alt={selectedChurch.name}
+              style={{
+                objectPosition:
+                  selectedChurch.imagePosition || "50% 50%",
+              }}
             />
 
           </div>
