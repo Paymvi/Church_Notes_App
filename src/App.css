@@ -2951,3 +2951,49 @@ body {
 .note-menu-delete:hover {
   background: rgba(239, 100, 100, 0.09);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   DATE PICKER
+========================================================= */
+
+.note-date-input {
+  cursor: pointer;
+}
+
+
+/*
+  The browser supplies the calendar icon.
+  This makes sure the whole field remains usable.
+*/
+
+.note-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+
+/*
+  On mobile, 16px prevents iOS from zooming
+  into the input when it is tapped.
+*/
+
+@media (max-width: 600px) {
+  .note-date-input {
+    font-size: 16px !important;
+  }
+}

@@ -57,12 +57,98 @@ const starterChurches = [
 // DATE HELPER
 // =========================================================
 
+// =========================================================
+// DATE HELPERS
+// =========================================================
+
+// Returns today's LOCAL date as:
+// 2026-08-25
+//
+// We intentionally do NOT use:
+// new Date().toISOString().split("T")[0]
+//
+// because UTC can sometimes shift the date by one day.
 function getTodayDate() {
-  return new Date().toLocaleDateString("en-US", {
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+// Turns:
+// 2026-08-25
+//
+// into:
+// August 25, 2026
+//
+// This is only for DISPLAYING the date.
+function formatNoteDate(dateString) {
+  if (!dateString) return "";
+
+  const match = dateString.match(
+    /^(\d{4})-(\d{2})-(\d{2})$/
+  );
+
+  if (!match) {
+    return dateString;
+  }
+
+  const [, year, month, day] = match;
+
+  const date = new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day)
+  );
+
+  return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
   });
+}
+
+
+// Converts OLD saved dates like:
+//
+// August 25, 2026
+//
+// into:
+//
+// 2026-08-25
+//
+// This lets your existing notes keep working.
+function normalizeNoteDate(dateString) {
+  if (!dateString) {
+    return getTodayDate();
+  }
+
+  // Already in the format we want.
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    return dateString;
+  }
+
+  const parsed = new Date(dateString);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return getTodayDate();
+  }
+
+  const year = parsed.getFullYear();
+
+  const month = String(
+    parsed.getMonth() + 1
+  ).padStart(2, "0");
+
+  const day = String(
+    parsed.getDate()
+  ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 }
 
 // =========================================================
@@ -124,7 +210,11 @@ export default function App() {
 
     if (saved) {
       try {
-        savedChurches = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+
+        savedChurches = Array.isArray(parsed)
+          ? parsed
+          : [];
       } catch {
         savedChurches = [];
       }
@@ -140,8 +230,13 @@ export default function App() {
       return {
         ...church,
 
-        // Keep previously saved notes if they exist.
-        notes: savedChurch?.notes || [],
+        notes: (savedChurch?.notes || []).map((note) => ({
+          ...note,
+
+          // Convert old human-readable dates
+          // to YYYY-MM-DD automatically.
+          date: normalizeNoteDate(note.date),
+        })),
       };
     });
   });
@@ -207,9 +302,14 @@ export default function App() {
   // =========================================================
 
   useEffect(() => {
+    const notesToSave = churches.map((church) => ({
+      id: church.id,
+      notes: church.notes,
+    }));
+
     localStorage.setItem(
       "bibleNotesChurches",
-      JSON.stringify(churches)
+      JSON.stringify(notesToSave)
     );
   }, [churches]);
 
@@ -230,14 +330,44 @@ export default function App() {
   // mutate React state.
   // =========================================================
 
+  // =========================================================
+  // SORT NOTES
+  //
+  // 1. Pinned notes appear first
+  // 2. Within each group, newest dates appear first
+  // =========================================================
+
   const displayedNotes = useMemo(() => {
     if (!selectedChurch) {
       return [];
     }
 
     return [...selectedChurch.notes].sort((a, b) => {
-      return Number(Boolean(b.isPinned)) -
-            Number(Boolean(a.isPinned));
+
+      // -----------------------------------------
+      // FIRST: PINNED NOTES
+      // -----------------------------------------
+
+      const pinDifference =
+        Number(Boolean(b.isPinned)) -
+        Number(Boolean(a.isPinned));
+
+      if (pinDifference !== 0) {
+        return pinDifference;
+      }
+
+
+      // -----------------------------------------
+      // SECOND: NEWEST DATE FIRST
+      //
+      // YYYY-MM-DD can safely be compared because
+      // the year comes first, then month, then day.
+      // -----------------------------------------
+
+      const dateA = a.date || "";
+      const dateB = b.date || "";
+
+      return dateB.localeCompare(dateA);
     });
 
   }, [selectedChurch]);
@@ -269,7 +399,14 @@ export default function App() {
           const searchableText = [
             church.name,
             note.title,
+
+            // Search both formats:
+            // "2026-08-25"
+            // AND
+            // "August 25, 2026"
             note.date,
+            formatNoteDate(note.date),
+
             note.text,
           ]
             .filter(Boolean)
@@ -687,8 +824,9 @@ export default function App() {
 
                       <p className="search-result-meta">
                         {result.churchName}
+
                         {result.note.date
-                          ? ` · ${result.note.date}`
+                          ? ` · ${formatNoteDate(result.note.date)}`
                           : ""}
                       </p>
 
@@ -956,7 +1094,7 @@ export default function App() {
 
                     </div>
 
-                    <p>{note.date}</p>
+                    <p>{formatNoteDate(note.date)}</p>
 
                   </div>
 
@@ -1057,6 +1195,7 @@ export default function App() {
 
                       <input
                         className="note-date-input"
+                        type="date"
                         value={note.date}
                         onChange={(event) =>
                           updateNote(
@@ -1065,7 +1204,6 @@ export default function App() {
                             event.target.value
                           )
                         }
-                        placeholder="Date"
                       />
 
 
