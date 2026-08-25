@@ -2997,3 +2997,125 @@ body {
     font-size: 16px !important;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   PINNED NOTE ICON
+========================================================= */
+
+.note-pinned-icon {
+  flex-shrink: 0;
+
+  width: 20px;
+  height: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-muted);
+
+  opacity: 0.8;
+
+  color: #d7a84b;
+  opacity: 1;
+}
+
+.note-pinned-icon svg {
+  width: 15px;
+  height: 15px;
+
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CHURCH TITLE SERVICE-TIME TOGGLE
+========================================================= */
+
+.church-title-toggle {
+  width: auto;
+
+  padding: 22px 18px 0;
+
+  display: block;
+
+  border: none;
+  border-radius: 0;
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  color: inherit;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* Keep existing eyebrow styling */
+
+.church-title-toggle .page-eyebrow {
+  margin: 0 0 6px;
+}
+
+
+/* Keep title looking like a normal heading */
+
+.church-title-toggle h1 {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 32px;
+  font-weight: 700;
+
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+
+/* Very subtle feedback when pressing it */
+
+.church-title-toggle:active {
+  opacity: 0.65;
+}
+
+
+/* Don't add a giant button focus box */
+
+.church-title-toggle:focus-visible {
+  outline: 2px solid var(--text-muted);
+  outline-offset: 4px;
+  border-radius: 4px;
+}

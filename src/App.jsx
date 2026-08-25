@@ -4,9 +4,6 @@ import "./App.css";
 
 // =========================================================
 // STARTER DATA
-//
-// Eventually these churches can come from a database.
-// For now, we keep everything local.
 // =========================================================
 
 const starterChurches = [
@@ -40,15 +37,15 @@ const starterChurches = [
 
   {
     id: 3,
-    name: "Other Churches",
-    image: "/churches/another-church.jpg",
+    name: "Other Congregations",
+    image: "/churches/Kingdom_Hall.webp",
     notes: [],
   },
 
   {
     id: 4,
     name: "Bible Studies",
-    image: "/churches/another-church.jpg",
+    image: "/churches/Toah_Nipi_Nature.jpeg",
     notes: [],
   },
 ];
@@ -274,6 +271,14 @@ export default function App() {
     return "light";
   });
 
+  // SERVICE TIMES TOGGLE
+  const [showServiceTimes, setShowServiceTimes] = useState(true);
+
+  useEffect(() => {
+    if (selectedChurchId !== null) {
+      setShowServiceTimes(true);
+    }
+  }, [selectedChurchId]);
 
   // NOTE ACTION MENU
   const [openNoteMenuId, setOpenNoteMenuId] = useState(null);
@@ -973,7 +978,16 @@ export default function App() {
 
           {/* CHURCH NAME */}
 
-          <div className="church-detail-title">
+          <button
+            type="button"
+            className="church-detail-title church-title-toggle"
+            onClick={() => {
+              if (selectedChurch.serviceTimes?.length > 0) {
+                setShowServiceTimes((current) => !current);
+              }
+            }}
+            aria-expanded={showServiceTimes}
+          >
             <p className="page-eyebrow">
               CHURCH
             </p>
@@ -981,12 +995,13 @@ export default function App() {
             <h1>
               {selectedChurch.name}
             </h1>
-          </div>
+          </button>
 
 
           {/* SERVICE TIMES */}
 
-          {selectedChurch.serviceTimes?.length > 0 && (
+          {showServiceTimes &&
+            selectedChurch.serviceTimes?.length > 0 && (
 
             <div className="service-times">
 
@@ -1087,8 +1102,20 @@ export default function App() {
                       </h2>
 
                       {note.isPinned && (
-                        <span className="note-pinned-badge">
-                          PINNED
+                        <span
+                          className="note-pinned-icon"
+                          title="Pinned note"
+                          aria-label="Pinned note"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M6 4.75A2.75 2.75 0 0 1 8.75 2h6.5A2.75 2.75 0 0 1 18 4.75V21l-6-3.75L6 21V4.75Z"
+                              fill="currentColor"
+                            />
+                          </svg>
                         </span>
                       )}
 
