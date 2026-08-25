@@ -114,6 +114,45 @@ export default function App() {
 
   const [selectedChurchId, setSelectedChurchId] = useState(null);
 
+  // =========================================================
+  // LIGHT / DARK MODE
+  // =========================================================
+
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("bibleNotesTheme");
+
+    // Use the user's saved choice first
+    if (savedTheme === "light" || savedTheme === "dark") {
+      return savedTheme;
+    }
+
+    // Otherwise use the phone/computer's current preference
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      return "dark";
+    }
+
+    return "light";
+  });
+
+
+  useEffect(() => {
+    localStorage.setItem("bibleNotesTheme", theme);
+
+    // Also lets the browser know which theme we're using
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.style.colorScheme = theme;
+  }, [theme]);
+
+
+  function toggleTheme() {
+    setTheme((currentTheme) =>
+      currentTheme === "light" ? "dark" : "light"
+    );
+  }
+
 
   // =========================================================
   // SAVE EVERYTHING
@@ -277,6 +316,18 @@ export default function App() {
     return (
       <div className="app-shell">
 
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={
+            theme === "light"
+              ? "Switch to dark mode"
+              : "Switch to light mode"
+          }
+        >
+          {theme === "light" ? "☾" : "☀"}
+        </button>
+
         <main className="home-page">
 
           <header className="page-header">
@@ -355,7 +406,19 @@ export default function App() {
   return (
     <div className="app-shell">
 
-      <main className="notes-page">
+    <button
+      className="theme-toggle"
+      onClick={toggleTheme}
+      aria-label={
+        theme === "light"
+          ? "Switch to dark mode"
+          : "Switch to light mode"
+      }
+    >
+      {theme === "light" ? "☾" : "☀"}
+    </button>
+
+    <main className="notes-page">
 
         <button
           className="back-button"

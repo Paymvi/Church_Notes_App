@@ -1674,7 +1674,6 @@ button {
 
 /* =========================================================
    CLEAN NOTE INPUT TYPOGRAPHY
-   Paste at END of App.css
 ========================================================= */
 
 .note-title-input,
@@ -1714,4 +1713,352 @@ button {
 
 .note-card-body {
   padding-top: 16px;
+}
+
+
+
+
+/* =========================================================
+   LIGHT + DARK MODE
+========================================================= */
+
+
+/* =========================================================
+   THEME VARIABLES - LIGHT MODE
+========================================================= */
+
+:root {
+  --app-bg: #f4f2ed;
+
+  --surface: #ffffff;
+  --surface-soft: #fafaf7;
+  --surface-hover: #f5f5f0;
+
+  --text-primary: #20231e;
+  --text-secondary: #60655d;
+  --text-muted: #8b8f86;
+
+  --border: #d8d9d2;
+  --divider: #e7e7e1;
+
+  --placeholder: #999d94;
+
+  --accent: #283327;
+  --accent-hover: #344033;
+  --accent-text: #ffffff;
+
+  --empty-bg: rgba(255, 255, 255, 0.38);
+
+  --note-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.025),
+    0 8px 24px rgba(0, 0, 0, 0.035);
+}
+
+
+/* =========================================================
+   THEME VARIABLES — DARK MODE
+========================================================= */
+
+html[data-theme="dark"] {
+  /* Main page background */
+  --app-bg: #0b0c10;
+
+  /* Cards */
+  --surface: #12141b;
+
+  /* Inputs / secondary surfaces */
+  /* --surface-soft: #1f2937; */
+  --surface-soft: #202433;
+
+  /* Hover state */
+  --surface-hover: #252d3a;
+
+  /* Main white text */
+  --text-primary: #f4f6ff;
+
+  /* Secondary text */
+  --text-secondary: rgba(244, 246, 255, 0.78);
+
+  /* Dates / labels / quieter text */
+  --text-muted: rgba(244, 246, 255, 0.62);
+
+  /* Very subtle borders */
+  --border: rgba(255, 255, 255, 0.08);
+
+  /* Separators */
+  --divider: rgba(255, 255, 255, 0.08);
+
+  /* Input placeholder */
+  --placeholder: rgba(244, 246, 255, 0.42);
+
+  /* Keep the Bible app's green identity */
+  --accent: #d7e1d2;
+  --accent-hover: #eef4ea;
+  --accent-text: #182017;
+
+  /* Empty state */
+  --empty-bg: #12141b;
+
+  --note-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+
+/* =========================================================
+   PAGE BACKGROUND
+========================================================= */
+
+html,
+body {
+  background: var(--app-bg);
+}
+
+.app-shell,
+.notes-page {
+  background: var(--app-bg);
+  color: var(--text-primary);
+
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
+
+.app-shell {
+  position: relative;
+}
+
+.theme-toggle {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  z-index: 50;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+
+  background: rgba(20, 20, 20, 0.38);
+  color: #ffffff;
+
+  font-size: 20px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  transition:
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(20, 20, 20, 0.55);
+}
+
+.theme-toggle:active {
+  transform: scale(0.94);
+}
+
+
+/* HOME PAGE:
+   button isn't sitting over a banner, so make it appropriate
+   for the current theme.
+*/
+
+.home-page ~ .theme-toggle {
+  color: var(--text-primary);
+}
+
+
+/* =========================================================
+   CHURCH DETAIL INFO
+========================================================= */
+
+.church-detail-title h1 {
+  color: var(--text-primary);
+}
+
+.church-detail-title .page-eyebrow {
+  color: var(--text-muted);
+}
+
+
+/* =========================================================
+   SERVICE TIMES
+========================================================= */
+
+.service-time {
+  border-color: var(--border);
+
+  background: var(--surface-soft);
+}
+
+.service-time-label {
+  color: var(--text-muted);
+}
+
+.service-time-value {
+  color: var(--text-primary);
+}
+
+
+/* =========================================================
+   NOTES SECTION
+========================================================= */
+
+.notes-top-row {
+  border-top-color: var(--divider);
+}
+
+.notes-section-heading h2 {
+  color: var(--text-primary);
+}
+
+
+/* =========================================================
+   ADD NOTE BUTTON
+========================================================= */
+
+.add-note-button {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.add-note-button:hover {
+  background: var(--accent-hover);
+}
+
+
+/* =========================================================
+   NOTE CARDS
+========================================================= */
+
+.note-card {
+  border-color: var(--border);
+
+  background: var(--surface);
+
+  box-shadow: var(--note-shadow);
+}
+
+.note-card-open {
+  border-color: var(--border);
+}
+
+.note-card-header {
+  color: var(--text-primary);
+}
+
+.note-card-header:hover {
+  background: var(--surface-hover);
+}
+
+.note-header-text h2 {
+  color: var(--text-primary);
+}
+
+.note-header-text p {
+  color: var(--text-muted);
+}
+
+.note-chevron {
+  color: var(--text-muted);
+}
+
+
+/* =========================================================
+   EXPANDED NOTE
+========================================================= */
+
+.note-card-body {
+  border-top-color: var(--divider);
+
+  background: var(--surface);
+}
+
+
+/* =========================================================
+   NOTE INPUTS
+========================================================= */
+
+.note-title-input,
+.note-date-input,
+.note-textarea {
+  border-color: var(--border) !important;
+
+  background: var(--surface-soft) !important;
+
+  color: var(--text-primary) !important;
+}
+
+
+.note-title-input:focus,
+.note-date-input:focus,
+.note-textarea:focus {
+  border-color: var(--text-muted) !important;
+
+  background: var(--surface) !important;
+}
+
+
+/* Placeholders */
+
+.note-title-input::placeholder,
+.note-date-input::placeholder,
+.note-textarea::placeholder {
+  color: var(--placeholder) !important;
+}
+
+
+/* =========================================================
+   FONT SIZE CONTROLS
+========================================================= */
+
+.inline-font-controls button {
+  border-color: var(--border);
+
+  background: var(--surface-soft);
+  color: var(--text-primary);
+}
+
+.inline-font-controls button:hover {
+  background: var(--surface-hover);
+}
+
+.inline-font-controls span {
+  color: var(--text-muted);
+}
+
+
+/* =========================================================
+   EMPTY NOTES
+========================================================= */
+
+.empty-notes {
+  background: var(--empty-bg);
+}
+
+.empty-notes h2 {
+  color: var(--text-primary);
+}
+
+.empty-notes p {
+  color: var(--text-muted);
 }
