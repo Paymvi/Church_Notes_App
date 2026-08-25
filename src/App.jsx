@@ -65,6 +65,48 @@ function getTodayDate() {
   });
 }
 
+// =========================================================
+// SEARCH RESULT PREVIEW
+//
+// Finds the searched word inside a note and returns a small
+// piece of text around it.
+// =========================================================
+
+function getSearchSnippet(text, query) {
+  if (!text) return "";
+
+  const cleanQuery = query.trim().toLowerCase();
+
+  if (!cleanQuery) {
+    return text.slice(0, 120);
+  }
+
+  const lowerText = text.toLowerCase();
+
+  const matchIndex = lowerText.indexOf(cleanQuery);
+
+  // If the actual note body did not contain the search,
+  // just show the beginning of the note.
+  if (matchIndex === -1) {
+    return text.length > 120
+      ? `${text.slice(0, 120)}...`
+      : text;
+  }
+
+  // Show some text before and after the matching word.
+  const start = Math.max(0, matchIndex - 45);
+  const end = Math.min(
+    text.length,
+    matchIndex + cleanQuery.length + 75
+  );
+
+  const snippet = text.slice(start, end).trim();
+
+  return `${start > 0 ? "..." : ""}${snippet}${
+    end < text.length ? "..." : ""
+  }`;
+}
+
 
 export default function App() {
 
@@ -113,6 +155,12 @@ export default function App() {
   // =========================================================
 
   const [selectedChurchId, setSelectedChurchId] = useState(null);
+
+  // =========================================================
+  // GLOBAL SEARCH
+  // =========================================================
+
+  const [searchQuery, setSearchQuery] = useState("");
 
   // =========================================================
   // LIGHT / DARK MODE
@@ -174,6 +222,88 @@ export default function App() {
       (church) => church.id === selectedChurchId
     );
   }, [churches, selectedChurchId]);
+
+
+  // =========================================================
+  // GLOBAL SEARCH RESULTS
+  //
+  // Searches:
+  // - note title
+  // - note body
+  // - note date
+  // - church name
+  //
+  // Results from ALL churches are combined together.
+  // =========================================================
+
+  const searchResults = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    // Don't show every note when the search box is empty.
+    if (!query) {
+      return [];
+    }
+
+    return churches.flatMap((church) => {
+      return church.notes
+        .filter((note) => {
+          const searchableText = [
+            church.name,
+            note.title,
+            note.date,
+            note.text,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+          return searchableText.includes(query);
+        })
+        .map((note) => ({
+          churchId: church.id,
+          churchName: church.name,
+          churchImage: church.image,
+          note,
+        }));
+    });
+  }, [churches, searchQuery]);
+
+
+  // =========================================================
+  // OPEN SEARCH RESULT
+  //
+  // Opens the correct church and automatically expands
+  // the note that was selected.
+  // =========================================================
+
+  function openSearchResult(churchId, noteId) {
+
+    setChurches((currentChurches) =>
+      currentChurches.map((church) => {
+
+        if (church.id !== churchId) {
+          return church;
+        }
+
+        return {
+          ...church,
+
+          notes: church.notes.map((note) => ({
+            ...note,
+
+            // Open only the note we selected.
+            isOpen: note.id === noteId,
+          })),
+        };
+      })
+    );
+
+    // Open that church.
+    setSelectedChurchId(churchId);
+
+    // Clear the search for next time.
+    setSearchQuery("");
+  }
 
 
   // =========================================================
@@ -339,58 +469,219 @@ export default function App() {
 
           </header>
 
+          {/* =========================================================
+              GLOBAL SEARCH
+          ========================================================= */}
 
-          <section className="church-list">
+          <section className="global-search">
 
-            {churches.map((church) => (
+            <div className="global-search-input-wrap">
 
-              <button
-                key={church.id}
-                className="church-card"
-                onClick={() =>
-                  setSelectedChurchId(church.id)
-                }
+              {/* SEARCH ICON */}
+
+              <svg
+                className="global-search-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
               >
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
 
-                <div className="church-image-wrapper">
+                <path
+                  d="M16.5 16.5L21 21"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
 
-                  <img
-                    src={church.image}
-                    alt={church.name}
-                    className="church-image"
-                    style={{
-                      objectPosition: church.imagePosition || "50% 50%",
-                    }}
-                  />
+
+              {/* SEARCH INPUT */}
+
+              <input
+                className="global-search-input"
+                type="search"
+                placeholder="Search all notes..."
+                value={searchQuery}
+                onChange={(event) =>
+                  setSearchQuery(event.target.value)
+                }
+              />
+
+
+              {/* CLEAR BUTTON */}
+
+              {searchQuery && (
+                <button
+                  type="button"
+                  className="global-search-clear"
+                  onClick={() => setSearchQuery("")}
+                  aria-label="Clear search"
+                >
+                  ×
+                </button>
+              )}
+
+            </div>
+
+          </section>
+
+          {/* =========================================================
+              SEARCH RESULTS
+          ========================================================= */}
+
+          {searchQuery.trim() && (
+
+            <section className="global-search-results">
+
+              <div className="global-search-results-header">
+
+                <span>
+                  {searchResults.length}{" "}
+                  {searchResults.length === 1
+                    ? "result"
+                    : "results"}
+                </span>
+
+              </div>
+
+
+              {/* NO RESULTS */}
+
+              {searchResults.length === 0 && (
+
+                <div className="global-search-empty">
+
+                  <h2>No notes found</h2>
+
+                  <p>
+                    Try another word or phrase.
+                  </p>
 
                 </div>
 
+              )}
 
-                <div className="church-card-footer">
 
-                  <div>
-                    <h2>{church.name}</h2>
+              {/* RESULTS */}
 
-                    {/* <p>
-                      {church.notes.length}{" "}
-                      {church.notes.length === 1
-                        ? "note"
-                        : "notes"}
-                    </p> */}
+              {searchResults.map((result) => (
+
+                <button
+                  key={`${result.churchId}-${result.note.id}`}
+                  className="global-search-result"
+                  onClick={() =>
+                    openSearchResult(
+                      result.churchId,
+                      result.note.id
+                    )
+                  }
+                >
+
+                  <div className="search-result-top">
+
+                    <div className="search-result-text">
+
+                      <h2>
+                        {result.note.title || "New Note"}
+                      </h2>
+
+                      <p className="search-result-meta">
+                        {result.churchName}
+                        {result.note.date
+                          ? ` · ${result.note.date}`
+                          : ""}
+                      </p>
+
+                    </div>
+
+
+                    <span className="search-result-arrow">
+                      ›
+                    </span>
+
                   </div>
 
 
-                  <span className="church-arrow">
-                    ›
-                  </span>
+                  {result.note.text && (
 
-                </div>
+                    <p className="search-result-preview">
+                      {getSearchSnippet(
+                        result.note.text,
+                        searchQuery
+                      )}
+                    </p>
 
-              </button>
+                  )}
 
-            ))}
+                </button>
 
-          </section>
+              ))}
+
+            </section>
+
+          )}
+
+          {!searchQuery.trim() && (
+            <section className="church-list">
+
+              {churches.map((church) => (
+
+                <button
+                  key={church.id}
+                  className="church-card"
+                  onClick={() =>
+                    setSelectedChurchId(church.id)
+                  }
+                >
+
+                  <div className="church-image-wrapper">
+
+                    <img
+                      src={church.image}
+                      alt={church.name}
+                      className="church-image"
+                      style={{
+                        objectPosition: church.imagePosition || "50% 50%",
+                      }}
+                    />
+
+                  </div>
+
+
+                  <div className="church-card-footer">
+
+                    <div>
+                      <h2>{church.name}</h2>
+
+                      {/* <p>
+                        {church.notes.length}{" "}
+                        {church.notes.length === 1
+                          ? "note"
+                          : "notes"}
+                      </p> */}
+                    </div>
+
+
+                    <span className="church-arrow">
+                      ›
+                    </span>
+
+                  </div>
+
+                </button>
+
+              ))}
+
+            </section>
+          )}
 
         </main>
 

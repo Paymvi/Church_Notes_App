@@ -2062,3 +2062,353 @@ body {
 .empty-notes p {
   color: var(--text-muted);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   GLOBAL SEARCH
+========================================================= */
+
+.global-search {
+  width: 100%;
+
+  margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   SEARCH INPUT WRAPPER
+========================================================= */
+
+.global-search-input-wrap {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+
+/* =========================================================
+   SEARCH ICON
+========================================================= */
+
+.global-search-icon {
+  position: absolute;
+
+  left: 15px;
+
+  width: 18px;
+  height: 18px;
+
+  color: var(--text-muted, #8b8f86);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SEARCH INPUT
+========================================================= */
+
+.global-search-input {
+  width: 100%;
+  height: 50px;
+
+  padding:
+    0
+    44px
+    0
+    43px;
+
+  border: 1px solid var(--border, #d8d9d2);
+  border-radius: 14px;
+
+  background: var(--surface, #ffffff);
+  color: var(--text-primary, #20231e);
+
+  font-size: 14px;
+  font-weight: 400;
+
+  outline: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition:
+    border-color 140ms ease,
+    background 140ms ease;
+}
+
+
+/* Remove browser's built-in search X */
+
+.global-search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+
+.global-search-input::placeholder {
+  color: var(--placeholder, #999d94);
+
+  opacity: 1;
+}
+
+
+.global-search-input:focus {
+  border-color: var(--text-muted, #999d94);
+}
+
+
+/* =========================================================
+   CLEAR SEARCH BUTTON
+========================================================= */
+
+.global-search-clear {
+  position: absolute;
+
+  right: 8px;
+
+  width: 34px;
+  height: 34px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 999px;
+
+  background: transparent;
+  color: var(--text-muted, #8b8f86);
+
+  font-size: 23px;
+  font-weight: 300;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+
+.global-search-clear:active {
+  transform: scale(0.9);
+}
+
+
+/* =========================================================
+   SEARCH RESULTS
+========================================================= */
+
+.global-search-results {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+/* Number of results */
+
+.global-search-results-header {
+  padding: 0 2px 3px;
+
+  color: var(--text-muted, #8b8f86);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   INDIVIDUAL RESULT
+========================================================= */
+
+.global-search-result {
+  width: 100%;
+
+  padding: 16px;
+
+  border: 1px solid var(--border, #d8d9d2);
+  border-radius: 16px;
+
+  background: var(--surface, #ffffff);
+  color: var(--text-primary, #20231e);
+
+  text-align: left;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.035);
+
+  transition:
+    transform 120ms ease,
+    background 120ms ease;
+}
+
+
+.global-search-result:active {
+  transform: scale(0.985);
+}
+
+
+.global-search-result:hover {
+  background: var(--surface-hover, #fafaf7);
+}
+
+
+/* =========================================================
+   RESULT TOP
+========================================================= */
+
+.search-result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+}
+
+
+.search-result-text {
+  min-width: 0;
+}
+
+
+.search-result-text h2 {
+  margin: 0 0 5px;
+
+  color: var(--text-primary, #20231e);
+
+  font-size: 16px;
+  font-weight: 650;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================================
+   CHURCH + DATE
+========================================================= */
+
+.search-result-meta {
+  margin: 0;
+
+  color: var(--text-muted, #8b8f86);
+
+  font-size: 11px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   NOTE PREVIEW
+========================================================= */
+
+.search-result-preview {
+  margin:
+    12px
+    24px
+    0
+    0;
+
+  color: var(--text-secondary, #60655d);
+
+  font-size: 13px;
+
+  line-height: 1.55;
+
+  /*
+    Only show about three lines even if the
+    matched note contains a lot of text.
+  */
+  display: -webkit-box;
+
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+
+  white-space: pre-line;
+}
+
+
+/* =========================================================
+   RESULT ARROW
+========================================================= */
+
+.search-result-arrow {
+  flex-shrink: 0;
+
+  color: var(--text-muted, #8b8f86);
+
+  font-size: 26px;
+  font-weight: 300;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   NO SEARCH RESULTS
+========================================================= */
+
+.global-search-empty {
+  padding: 45px 20px;
+
+  border-radius: 16px;
+
+  background: var(--surface, #ffffff);
+
+  text-align: center;
+}
+
+
+.global-search-empty h2 {
+  margin: 0 0 6px;
+
+  color: var(--text-primary, #20231e);
+
+  font-size: 16px;
+  font-weight: 650;
+}
+
+
+.global-search-empty p {
+  margin: 0;
+
+  color: var(--text-muted, #8b8f86);
+
+  font-size: 13px;
+}
