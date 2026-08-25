@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
 import "./App.css";
 
 
@@ -192,6 +198,10 @@ function getSearchSnippet(text, query) {
 
 
 export default function App() {
+
+
+  // Import/Export
+  const importFileRef = useRef(null);
 
   // =========================================================
   // CHURCH DATA
@@ -634,6 +644,212 @@ export default function App() {
     );
   }
 
+  // =========================================================
+  // EXPORT NOTES
+  // =========================================================
+
+  function exportNotes() {
+
+    // Only export note data.
+    //
+    // Church images, service times, etc. remain controlled
+    // by starterChurches in the code.
+    const backup = {
+      app: "Bible Notes",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+
+      churches: churches.map((church) => ({
+        id: church.id,
+        name: church.name,
+        notes: church.notes,
+      })),
+    };
+
+
+    // Turn the JavaScript object into formatted JSON.
+    const json = JSON.stringify(
+      backup,
+      null,
+      2
+    );
+
+
+    // Create a downloadable file.
+    const blob = new Blob(
+      [json],
+      {
+        type: "application/json",
+      }
+    );
+
+
+    const url = URL.createObjectURL(blob);
+
+
+    // Create today's date for the filename.
+    const today = getTodayDate();
+
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+      `bible-notes-backup-${today}.json`;
+
+    link.click();
+
+
+    // Clean up the temporary browser URL.
+    URL.revokeObjectURL(url);
+  }
+
+  // =========================================================
+  // IMPORT NOTES
+  // =========================================================
+
+  function importNotes(event) {
+
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+
+    // Only allow JSON files.
+    if (!file.name.toLowerCase().endsWith(".json")) {
+      alert("Please choose a Bible Notes JSON backup.");
+
+      event.target.value = "";
+
+      return;
+    }
+
+
+    const reader = new FileReader();
+
+
+    reader.onload = () => {
+
+      try {
+
+        const backup = JSON.parse(
+          reader.result
+        );
+
+
+        // -----------------------------------------
+        // BASIC BACKUP VALIDATION
+        // -----------------------------------------
+
+        if (
+          backup.app !== "Bible Notes" ||
+          backup.version !== 1 ||
+          !Array.isArray(backup.churches)
+        ) {
+          throw new Error(
+            "This is not a valid Bible Notes backup."
+          );
+        }
+
+
+        // -----------------------------------------
+        // WARN BEFORE REPLACING NOTES
+        // -----------------------------------------
+
+        const shouldImport = window.confirm(
+          "Import this backup?\n\n" +
+          "This will replace the notes currently stored in this app."
+        );
+
+
+        if (!shouldImport) {
+          event.target.value = "";
+
+          return;
+        }
+
+
+        // -----------------------------------------
+        // RESTORE NOTES
+        // -----------------------------------------
+
+        setChurches((currentChurches) =>
+          currentChurches.map((church) => {
+
+            const importedChurch =
+              backup.churches.find(
+                (backupChurch) =>
+                  backupChurch.id === church.id
+              );
+
+
+            // If this church wasn't in the backup,
+            // leave its current notes alone.
+            if (
+              !importedChurch ||
+              !Array.isArray(importedChurch.notes)
+            ) {
+              return church;
+            }
+
+
+            return {
+              ...church,
+
+              notes: importedChurch.notes.map(
+                (note) => ({
+                  ...note,
+
+                  // Make sure imported/older dates
+                  // use our current date format.
+                  date: normalizeNoteDate(
+                    note.date
+                  ),
+
+                  // Start imported notes collapsed.
+                  isOpen: false,
+
+                  // Handle backups made before
+                  // pinning existed.
+                  isPinned:
+                    Boolean(note.isPinned),
+
+                  // Defensive fallback.
+                  fontSize:
+                    Number(note.fontSize) || 16,
+                })
+              ),
+            };
+          })
+        );
+
+
+        alert("Bible notes imported successfully.");
+
+      } catch (error) {
+
+        console.error(
+          "Import failed:",
+          error
+        );
+
+        alert(
+          "That file could not be imported. Make sure it is a valid Bible Notes backup."
+        );
+      }
+
+
+      // Allows you to import the SAME file again later.
+      event.target.value = "";
+    };
+
+
+    reader.readAsText(file);
+  }
+
 
   // =========================================================
   // ADD NEW NOTE
@@ -704,66 +920,169 @@ export default function App() {
           </header>
 
           {/* =========================================================
-              GLOBAL SEARCH
+            SEARCH + BACKUP ACTIONS
           ========================================================= */}
 
-          <section className="global-search">
+          <section className="home-tools-row">
 
-            <div className="global-search-input-wrap">
+            {/* SEARCH */}
 
-              {/* SEARCH ICON */}
+            <div className="global-search">
 
-              <svg
-                className="global-search-icon"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <circle
-                  cx="11"
-                  cy="11"
-                  r="7"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
+              <div className="global-search-input-wrap">
 
-                <path
-                  d="M16.5 16.5L21 21"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-
-
-              {/* SEARCH INPUT */}
-
-              <input
-                className="global-search-input"
-                type="search"
-                placeholder="Search all notes..."
-                value={searchQuery}
-                onChange={(event) =>
-                  setSearchQuery(event.target.value)
-                }
-              />
-
-
-              {/* CLEAR BUTTON */}
-
-              {searchQuery && (
-                <button
-                  type="button"
-                  className="global-search-clear"
-                  onClick={() => setSearchQuery("")}
-                  aria-label="Clear search"
+                <svg
+                  className="global-search-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
-                  ×
-                </button>
-              )}
+                  <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+
+                  <path
+                    d="M16.5 16.5L21 21"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+
+
+                <input
+                  className="global-search-input"
+                  type="search"
+                  placeholder="Search all notes..."
+                  value={searchQuery}
+                  onChange={(event) =>
+                    setSearchQuery(event.target.value)
+                  }
+                />
+
+
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className="global-search-clear"
+                    onClick={() =>
+                      setSearchQuery("")
+                    }
+                    aria-label="Clear search"
+                  >
+                    ×
+                  </button>
+                )}
+
+              </div>
 
             </div>
+
+
+            {/* IMPORT / EXPORT */}
+
+            <div className="backup-actions">
+
+              {/* IMPORT */}
+
+              <button
+                type="button"
+                className="backup-action-button"
+                onClick={() =>
+                  importFileRef.current?.click()
+                }
+                aria-label="Import notes"
+                title="Import notes"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 3v12"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+
+                  <path
+                    d="m7 10 5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+
+                  <path
+                    d="M5 20h14"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+
+
+              {/* EXPORT */}
+
+              <button
+                type="button"
+                className="backup-action-button"
+                onClick={exportNotes}
+                aria-label="Export notes"
+                title="Export notes"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 21V9"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+
+                  <path
+                    d="m7 14 5-5 5 5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+
+                  <path
+                    d="M5 4h14"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+
+            </div>
+
+
+            {/* HIDDEN IMPORT INPUT */}
+
+            <input
+              ref={importFileRef}
+              type="file"
+              accept=".json,application/json"
+              onChange={importNotes}
+              className="backup-file-input"
+            />
 
           </section>
 

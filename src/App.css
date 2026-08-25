@@ -3119,3 +3119,114 @@ body {
   outline-offset: 4px;
   border-radius: 4px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   HOME SEARCH + IMPORT / EXPORT
+========================================================= */
+
+.home-tools-row {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 20px;
+}
+
+
+/* Search takes all remaining width */
+
+.home-tools-row .global-search {
+  flex: 1;
+
+  min-width: 0;
+
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   BACKUP ACTION BUTTONS
+========================================================= */
+
+.backup-actions {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+
+.backup-action-button {
+  width: 50px;
+  height: 50px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  background: var(--surface);
+
+  color: var(--text-muted);
+
+  cursor: pointer;
+
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    transform 120ms ease;
+}
+
+
+.backup-action-button svg {
+  width: 18px;
+  height: 18px;
+
+  display: block;
+}
+
+
+.backup-action-button:hover {
+  background: var(--surface-hover);
+
+  color: var(--text-primary);
+}
+
+
+.backup-action-button:active {
+  transform: scale(0.94);
+}
+
+
+/* Actual file picker stays hidden */
+
+.backup-file-input {
+  display: none;
+}
