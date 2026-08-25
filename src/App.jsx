@@ -271,7 +271,7 @@ export default function App() {
               MY NOTES
             </p> */}
 
-            <h1>Church Notes</h1>
+            {/* <h1>Church Notes</h1> */}
 
           </header>
 

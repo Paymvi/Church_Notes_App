@@ -655,3 +655,139 @@ button {
     border-radius: 16px;
   }
 }
+
+
+
+
+
+
+
+/* =========================================================
+   CHURCH CARD
+========================================================= */
+
+.church-card {
+  position: relative;
+
+  width: 100%;
+  height: 300px;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  border: none;
+  border-radius: 22px;
+
+  background: #222;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.08),
+    0 14px 30px rgba(0, 0, 0, 0.1);
+
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.church-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 5px 12px rgba(0, 0, 0, 0.1),
+    0 18px 38px rgba(0, 0, 0, 0.14);
+}
+
+.church-card:active {
+  transform: scale(0.99);
+}
+
+
+/* =========================================================
+   CHURCH IMAGE
+========================================================= */
+
+.church-image-wrapper {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+.church-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 350ms ease;
+}
+
+.church-card:hover .church-image {
+  transform: scale(1.025);
+}
+
+
+
+/* =========================================================
+   CHURCH NAME OVER IMAGE
+========================================================= */
+
+.church-card-footer {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 2;
+
+  padding: 46px 20px 18px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+
+  color: white;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.68)
+  );
+}
+
+
+.church-card-footer h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 21px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+
+  line-height: 1.15;
+
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.35);
+}
+.church-arrow {
+  color: rgba(255, 255, 255, 0.9);
+
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 0.9;
+
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3);
+}
