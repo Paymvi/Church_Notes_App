@@ -2412,3 +2412,542 @@ body {
 
   font-size: 13px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   NOTE HEADER WITH "..." MENU
+========================================================= */
+
+.note-card-header {
+  position: relative;
+
+  width: 100%;
+
+  padding: 0;
+
+  display: flex;
+  align-items: stretch;
+
+  background: transparent;
+
+  border: none;
+}
+
+
+/* =========================================================
+   MAIN CLICKABLE NOTE HEADER
+========================================================= */
+
+.note-header-main {
+  flex: 1;
+  min-width: 0;
+
+  padding: 17px 8px 17px 17px;
+
+  border: none;
+  border-radius: 0;
+
+  background: transparent;
+  color: var(--text-primary);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.note-header-main:hover {
+  background: var(--surface-hover);
+}
+
+
+/* =========================================================
+   NOTE TITLE ROW
+========================================================= */
+
+.note-title-row {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+}
+
+
+.note-title-row h2 {
+  margin: 0 0 5px;
+
+  min-width: 0;
+
+  color: var(--text-primary);
+
+  font-size: 17px;
+  font-weight: 650;
+
+  letter-spacing: -0.01em;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   PINNED BADGE
+========================================================= */
+
+.note-pinned-badge {
+  flex-shrink: 0;
+
+  padding: 3px 6px;
+
+  border-radius: 6px;
+
+  background: rgba(120, 150, 110, 0.12);
+
+  color: var(--text-muted);
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   THREE DOT AREA
+========================================================= */
+
+.note-menu-container {
+  position: relative;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: flex-start;
+
+  padding: 8px 8px 0 0;
+}
+
+
+/* =========================================================
+   THREE DOT BUTTON
+========================================================= */
+
+.note-menu-button {
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 10px;
+
+  background: transparent;
+  color: var(--text-muted);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  letter-spacing: 1px;
+}
+
+
+.note-menu-button:hover {
+  background: var(--surface-hover);
+
+  color: var(--text-primary);
+}
+
+
+.note-menu-button:active {
+  transform: scale(0.94);
+}
+
+
+/* =========================================================
+   DROPDOWN MENU
+========================================================= */
+
+.note-menu-dropdown {
+  position: absolute;
+
+  top: 45px;
+  right: 8px;
+
+  z-index: 100;
+
+  width: 150px;
+
+  padding: 5px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--surface);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18);
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   MENU ITEMS
+========================================================= */
+
+.note-menu-item {
+  width: 100%;
+
+  padding: 10px 11px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: var(--text-primary);
+
+  text-align: left;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+
+.note-menu-item:hover {
+  background: var(--surface-hover);
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+.note-menu-delete {
+  color: #d95151;
+}
+
+
+.note-menu-delete:hover {
+  background: rgba(217, 81, 81, 0.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   CLEAN NOTE HEADER + ACTION MENU
+========================================================= */
+
+
+/* =========================================================
+   IMPORTANT:
+   Allow the dropdown to extend OUTSIDE the note card.
+========================================================= */
+
+.note-card {
+  position: relative;
+
+  overflow: visible;
+}
+
+
+/* =========================================================
+   NOTE HEADER
+========================================================= */
+
+.note-card-header {
+  position: relative;
+
+  width: 100%;
+
+  padding: 0;
+
+  display: flex;
+  align-items: stretch;
+
+  border: none;
+
+  background: var(--surface);
+}
+
+
+/*
+  Preserve the rounded corners when the note is collapsed.
+*/
+
+.note-card:not(.note-card-open) .note-card-header {
+  border-radius: 20px;
+}
+
+
+/* Open note only needs rounded top corners */
+
+.note-card-open .note-card-header {
+  border-radius: 20px 20px 0 0;
+}
+
+
+/* =========================================================
+   MAIN TITLE / DATE AREA
+========================================================= */
+
+.note-header-main {
+  flex: 1;
+  min-width: 0;
+
+  padding: 17px 8px 17px 18px;
+
+  display: flex;
+  align-items: center;
+
+  border: none;
+  border-radius: inherit;
+
+  background: transparent;
+  color: var(--text-primary);
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.note-header-main:hover {
+  background: var(--surface-hover);
+}
+
+
+/* =========================================================
+   TITLE + DATE
+========================================================= */
+
+.note-header-text {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.note-title-row {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  min-width: 0;
+}
+
+
+.note-title-row h2 {
+  min-width: 0;
+
+  margin: 0 0 5px;
+
+  color: var(--text-primary);
+
+  font-size: 16px;
+  font-weight: 650;
+
+  line-height: 1.2;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.note-header-text p {
+  margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   PINNED LABEL
+========================================================= */
+
+.note-pinned-badge {
+  flex-shrink: 0;
+
+  padding: 2px 6px;
+
+  border-radius: 5px;
+
+  background: rgba(120, 150, 110, 0.12);
+
+  color: var(--text-muted);
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   THREE DOT CONTAINER
+========================================================= */
+
+.note-menu-container {
+  position: relative;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: flex-start;
+
+  padding: 9px 10px 0 0;
+
+  z-index: 100;
+}
+
+
+/* =========================================================
+   THREE DOT BUTTON
+========================================================= */
+
+.note-menu-button {
+  width: 36px;
+  height: 36px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 10px;
+
+  background: transparent;
+  color: var(--text-muted);
+
+  font-size: 25px;
+  font-weight: 500;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+
+.note-menu-button:hover {
+  background: var(--surface-hover);
+
+  color: var(--text-primary);
+}
+
+
+.note-menu-button:active {
+  transform: scale(0.92);
+}
+
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.note-menu-dropdown {
+  position: absolute;
+
+  top: 43px;
+  right: 9px;
+
+  z-index: 1000;
+
+  width: 118px;
+
+  padding: 4px;
+
+  border: 1px solid var(--border);
+  border-radius: 11px;
+
+  background: var(--surface);
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   DROPDOWN BUTTONS
+========================================================= */
+
+.note-menu-item {
+  width: 100%;
+
+  padding: 9px 10px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: transparent;
+  color: var(--text-primary);
+
+  text-align: left;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+
+.note-menu-item:hover {
+  background: var(--surface-hover);
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+.note-menu-delete {
+  color: #ef6464;
+}
+
+
+.note-menu-delete:hover {
+  background: rgba(239, 100, 100, 0.09);
+}

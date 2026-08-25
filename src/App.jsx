@@ -156,16 +156,10 @@ export default function App() {
 
   const [selectedChurchId, setSelectedChurchId] = useState(null);
 
-  // =========================================================
   // GLOBAL SEARCH
-  // =========================================================
-
   const [searchQuery, setSearchQuery] = useState("");
 
-  // =========================================================
   // LIGHT / DARK MODE
-  // =========================================================
-
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem("bibleNotesTheme");
 
@@ -184,6 +178,10 @@ export default function App() {
 
     return "light";
   });
+
+
+  // NOTE ACTION MENU
+  const [openNoteMenuId, setOpenNoteMenuId] = useState(null);
 
 
   useEffect(() => {
@@ -222,6 +220,27 @@ export default function App() {
       (church) => church.id === selectedChurchId
     );
   }, [churches, selectedChurchId]);
+
+
+  // =========================================================
+  // DISPLAYED NOTES
+  //
+  // Pinned notes appear first.
+  // We make a COPY before sorting so we do not directly
+  // mutate React state.
+  // =========================================================
+
+  const displayedNotes = useMemo(() => {
+    if (!selectedChurch) {
+      return [];
+    }
+
+    return [...selectedChurch.notes].sort((a, b) => {
+      return Number(Boolean(b.isPinned)) -
+            Number(Boolean(a.isPinned));
+    });
+
+  }, [selectedChurch]);
 
 
   // =========================================================
@@ -367,6 +386,76 @@ export default function App() {
 
 
   // =========================================================
+  // PIN / UNPIN NOTE
+  // =========================================================
+
+  function togglePinNote(noteId) {
+    setChurches((currentChurches) =>
+      currentChurches.map((church) => {
+
+        // Only modify the church we're currently viewing.
+        if (church.id !== selectedChurchId) {
+          return church;
+        }
+
+        return {
+          ...church,
+
+          notes: church.notes.map((note) =>
+            note.id === noteId
+              ? {
+                  ...note,
+                  isPinned: !note.isPinned,
+                }
+              : note
+          ),
+        };
+      })
+    );
+
+    // Close the "..." menu after selecting the action.
+    setOpenNoteMenuId(null);
+  }
+
+
+  // =========================================================
+  // DELETE NOTE
+  // =========================================================
+
+  function deleteNote(noteId) {
+
+    const shouldDelete = window.confirm(
+      "Delete this note? This cannot be undone."
+    );
+
+    if (!shouldDelete) {
+      return;
+    }
+
+    setChurches((currentChurches) =>
+      currentChurches.map((church) => {
+
+        if (church.id !== selectedChurchId) {
+          return church;
+        }
+
+        return {
+          ...church,
+
+          // Keep every note except the one being deleted.
+          notes: church.notes.filter(
+            (note) => note.id !== noteId
+          ),
+        };
+      })
+    );
+
+    // Close menu.
+    setOpenNoteMenuId(null);
+  }
+
+
+  // =========================================================
   // CHANGE TEXT SIZE
   // =========================================================
 
@@ -417,6 +506,9 @@ export default function App() {
       text: "",
       isOpen: true,
       fontSize: 16,
+
+      // New notes start unpinned.
+      isPinned: false,
     };
 
     setChurches((currentChurches) =>
@@ -821,7 +913,7 @@ export default function App() {
           )}
 
 
-          {selectedChurch.notes.map((note) => (
+          {displayedNotes.map((note) => (
 
             <article
               key={note.id}
@@ -834,33 +926,102 @@ export default function App() {
 
               {/* COLLAPSED NOTE HEADER */}
 
-              <button
-                className="note-card-header"
-                onClick={() => toggleNote(note.id)}
-              >
+              {/* =========================================================
+                  NOTE HEADER
+              ========================================================= */}
 
-                <div className="note-header-text">
+              <div className="note-card-header">
 
-                  <h2>
-                    {note.title || "Untitled Note"}
-                  </h2>
+                {/* Clicking title/date opens or closes the note */}
 
-                  <p>{note.date}</p>
+                <button
+                  type="button"
+                  className="note-header-main"
+                  onClick={() => toggleNote(note.id)}
+                >
+
+                  <div className="note-header-text">
+
+                    <div className="note-title-row">
+
+                      <h2>
+                        {note.title || "New Note"}
+                      </h2>
+
+                      {note.isPinned && (
+                        <span className="note-pinned-badge">
+                          PINNED
+                        </span>
+                      )}
+
+                    </div>
+
+                    <p>{note.date}</p>
+
+                  </div>
+
+                </button>
+
+
+                {/* THREE DOT MENU */}
+
+                <div className="note-menu-container">
+
+                  <button
+                    type="button"
+                    className="note-menu-button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+
+                      setOpenNoteMenuId((currentId) =>
+                        currentId === note.id
+                          ? null
+                          : note.id
+                      );
+                    }}
+                    aria-label="Note options"
+                  >
+                    ⋯
+                  </button>
+
+
+                  {openNoteMenuId === note.id && (
+
+                    <div
+                      className="note-menu-dropdown"
+                      onClick={(event) =>
+                        event.stopPropagation()
+                      }
+                    >
+
+                      <button
+                        type="button"
+                        className="note-menu-item"
+                        onClick={() =>
+                          togglePinNote(note.id)
+                        }
+                      >
+                        {note.isPinned ? "Unpin" : "Pin"}
+                      </button>
+
+
+                      <button
+                        type="button"
+                        className="note-menu-item note-menu-delete"
+                        onClick={() =>
+                          deleteNote(note.id)
+                        }
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  )}
 
                 </div>
 
-
-                <span
-                  className={
-                    note.isOpen
-                      ? "note-chevron note-chevron-open"
-                      : "note-chevron"
-                  }
-                >
-                 ⌄
-                </span>
-
-              </button>
+              </div>
 
 
               {/* EXPANDED NOTE */}
